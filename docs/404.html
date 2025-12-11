@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="refresh" content="0; url=/doctruyentest/">
+  <script>
+    // Fallback redirect for SPA routes on GitHub Pages
+    const base = '/doctruyentest';
+    const path = window.location.pathname || '/';
+    if (!path.startsWith(base)) {
+      window.location.replace(base + '/');
+    } else {
+      // strip base and reload index within site
+      window.location.replace(base + '/');
+    }
+  </script>
+</head>
+<body>
+  <p>Đang chuyển hướng...</p>
+</body>
+</html>
+
