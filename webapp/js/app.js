@@ -45,10 +45,21 @@ async function initializeApp() {
     registerRoutes();
     console.log('[App] Routes registered:', Array.from(router.routes.keys()));
     
-    // Handle initial route immediately - THIS IS CRITICAL
-    const currentPath = window.location.pathname;
-    console.log('[App] Handling initial route:', currentPath);
-    router.handleRoute();
+    // Handle redirect param from 404 fallback (GitHub Pages)
+    const params = new URLSearchParams(window.location.search);
+    const redirectPath = params.get('redirect');
+    if (redirectPath) {
+        const decoded = decodeURIComponent(redirectPath);
+        // Clean URL (remove redirect param) and navigate
+        const cleanUrl = window.location.origin + window.location.pathname;
+        window.history.replaceState({}, '', cleanUrl);
+        router.replace(decoded);
+    } else {
+        // Handle initial route immediately - THIS IS CRITICAL
+        const currentPath = window.location.pathname;
+        console.log('[App] Handling initial route:', currentPath);
+        router.handleRoute();
+    }
     
     // Initialize PWA
     initPWA();
