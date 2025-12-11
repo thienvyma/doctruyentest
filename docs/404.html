@@ -3,17 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="refresh" content="0; url=/doctruyentest/">
   <script>
-    // Fallback redirect for SPA routes on GitHub Pages
-    const base = '/doctruyentest';
-    const path = window.location.pathname || '/';
-    if (!path.startsWith(base)) {
-      window.location.replace(base + '/');
-    } else {
-      // strip base and reload index within site
-      window.location.replace(base + '/');
-    }
+    // Preserve SPA route when served from GitHub Pages
+    (function() {
+      const base = '/doctruyentest';
+      const path = window.location.pathname || '/';
+      const search = window.location.search || '';
+      const hash = window.location.hash || '';
+      // Strip base for redirect param
+      let rel = path.startsWith(base) ? path.slice(base.length) : path;
+      if (!rel.startsWith('/')) rel = '/' + rel;
+      const target = `${base}/?redirect=${encodeURIComponent(rel + search + hash)}`;
+      window.location.replace(target);
+    })();
   </script>
 </head>
 <body>

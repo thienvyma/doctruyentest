@@ -41,6 +41,18 @@ async function initializeApp() {
     // Initialize router first
     router.init();
     
+    // Handle redirect param from 404 fallback (GitHub Pages)
+    const params = new URLSearchParams(window.location.search);
+    const redirectPath = params.get('redirect');
+    if (redirectPath) {
+        const decoded = decodeURIComponent(redirectPath);
+        // Clean URL (remove redirect param) and navigate
+        const cleanUrl = window.location.origin + window.location.pathname;
+        window.history.replaceState({}, '', cleanUrl);
+        router.replace(decoded);
+        return; // wait for route handling
+    }
+
     // Register routes BEFORE handling initial route
     registerRoutes();
     console.log('[App] Routes registered:', Array.from(router.routes.keys()));
