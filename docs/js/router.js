@@ -6,6 +6,8 @@
  * - /novel/:id/chapter/:chapterId : Trang đọc truyện
  */
 
+const BASE_PATH = '/doctruyentest';
+
 class Router {
     constructor() {
         this.routes = new Map();
@@ -65,8 +67,9 @@ class Router {
      * @param {string} path - Path to navigate to
      */
     navigate(path) {
-        if (path !== window.location.pathname) {
-            window.history.pushState({}, '', path);
+        const fullPath = this.normalizePath(path);
+        if (fullPath !== window.location.pathname) {
+            window.history.pushState({}, '', fullPath);
             this.handleRoute();
         }
     }
@@ -76,8 +79,18 @@ class Router {
      * @param {string} path - Path to navigate to
      */
     replace(path) {
-        window.history.replaceState({}, '', path);
+        const fullPath = this.normalizePath(path);
+        window.history.replaceState({}, '', fullPath);
         this.handleRoute();
+    }
+
+    /**
+     * Normalize path with BASE_PATH
+     */
+    normalizePath(path) {
+        // Ensure leading slash
+        const p = path.startsWith('/') ? path : `/${path}`;
+        return `${BASE_PATH}${p === '/' ? '' : p}`;
     }
 
     /**
@@ -123,7 +136,11 @@ class Router {
      * Handle current route
      */
     handleRoute() {
-        const path = window.location.pathname;
+        // Strip BASE_PATH for matching
+        let path = window.location.pathname || '/';
+        if (path.startsWith(BASE_PATH)) {
+            path = path.slice(BASE_PATH.length) || '/';
+        }
         console.log('Router: Handling route', path);
         console.log('Router: Available routes:', Array.from(this.routes.keys()));
 
