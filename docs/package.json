@@ -1,0 +1,13 @@
+{
+  "name": "novel-reader-webapp",
+  "version": "1.0.0",
+  "description": "Web app để đọc truyện",
+  "scripts": {
+    "start": "python -m http.server 8080",
+    "serve": "npx http-server -p 8080 -c-1"
+  },
+  "keywords": ["novel", "reader", "pwa"],
+  "author": "",
+  "license": "MIT"
+}
+
