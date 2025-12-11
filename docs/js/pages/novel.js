@@ -64,6 +64,13 @@ async function loadNovelDetail(novelId) {
             state.currentNovelDetail = await resp.json();
             state.allChapters = state.currentNovelDetail.chapters || [];
 
+            // Find or set currentNovel for state
+            state.currentNovel = state.novels.find(n => n.id === novelId || n.novel_id === novelId) || {
+                id: state.currentNovelDetail.id || novelId,
+                title: state.currentNovelDetail.title,
+                totalChapters: state.currentNovelDetail.totalChapters
+            };
+
             // Update UI
             document.getElementById('novelTitle').textContent = state.currentNovelDetail.title || '';
             document.getElementById('novelMeta').textContent = `${state.currentNovelDetail.totalChapters || 0} chương`;
